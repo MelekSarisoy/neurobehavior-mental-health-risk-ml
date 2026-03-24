@@ -1,19 +1,3 @@
-"""
-╔══════════════════════════════════════════════════════════════════════╗
-║   NeuroBehavior Clinical Health Risk — Sınıflandırma Projesi        ║
-║   Hedef: Mental_Health_Risk (0 = Düşük Risk, 1 = Yüksek Risk)       ║
-║   Yöntem: 10-Fold Stratified Cross Validation                       ║
-║                                                                      ║
-║   Metrikler:                                                         ║
-║     • Accuracy                                                       ║
-║     • Recall  (Sensitivity / True Positive Rate)                    ║
-║     • Specificity (True Negative Rate)                               ║
-║     • Precision                                                      ║
-║     • F1-Score                                                       ║
-║     • Matthews Correlation Coefficient (MCC)                         ║
-╚══════════════════════════════════════════════════════════════════════╝
-"""
-
 # ─────────────────────────────────────────────
 # 0. KÜTÜPHANELER
 # ─────────────────────────────────────────────
@@ -449,9 +433,7 @@ desc.font      = Font(name="Calibri", size=9, italic=True, color="595959")
 desc.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
 ws1.row_dimensions[desc_row].height = 30
 
-# ══════════════════════════════════════════════
 # SAYFA 2 — Test Seti Tahminleri + Risk
-# ══════════════════════════════════════════════
 ws2 = wb.create_sheet("Test Tahminleri")
 ws2.sheet_view.showGridLines = False
 
@@ -840,22 +822,6 @@ print(f"\n{BANNER}")
 print("  PROJE TAMAMLANDI")
 print(BANNER)
 print(f"""
-  Üretilen Dosyalar:
-  ┌─────────────────────────────────────────────────────────────┐
-  │  📗  ML_Sonuclar_Raporu.xlsx         (tam Excel raporu)     │
-  │      └─ Sayfa 1: Model Sonuçları (metrik tablosu)          │
-  │      └─ Sayfa 2: Test Tahminleri + Risk Seviyesi           │
-  │      └─ Sayfa 3: Train CV Tahminleri + Risk                │
-  │      └─ Sayfa 4: Özet & İstatistikler                      │
-  │  📈  01_model_comparison_bars.png   (bar grafikleri)        │
-  │  🔥  02_heatmap_results.png         (ısıl harita)           │
-  │  🧩  03_confusion_matrices.png      (karmaşıklık matrisi)   │
-  │  🕸   04_radar_chart.png             (radar grafik)          │
-  │  📉  05_roc_curve_best.png          (ROC eğrisi)            │
-  │  🌲  06_feature_importance.png      (özellik önemi)         │
-  │  🥧  07_risk_distribution.png       (risk pasta grafik)     │
-  │  🎯  submission_predictions.csv     (Kaggle submission)     │
-  └─────────────────────────────────────────────────────────────┘
 
   Risk Seviyeleri:
     🟢 Düşük Risk       → Tahmin=0, Olasılık < %25

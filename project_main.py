@@ -1,6 +1,6 @@
-# ─────────────────────────────────────────────
+
+
 # 0. KÜTÜPHANELER
-# ─────────────────────────────────────────────
 import os, sys
 import pandas as pd
 import numpy as np
@@ -57,9 +57,8 @@ except ImportError:
 warnings.filterwarnings("ignore")
 BANNER = "═" * 68
 
-# ─────────────────────────────────────────────
 # 1. VERİ YÜKLEME
-# ─────────────────────────────────────────────
+
 print(f"\n{BANNER}")
 print("  ADIM 1 — Veri Yükleme")
 print(BANNER)
@@ -77,9 +76,8 @@ print(f"  NeuroBehavior : {main_df.shape[0]} satır × {main_df.shape[1]} sütun
 print(f"\n  Hedef         : '{TARGET}'")
 print(f"  Dağılım       : {train[TARGET].value_counts().to_dict()}")
 
-# ─────────────────────────────────────────────
 # 2. ÖN İŞLEME
-# ─────────────────────────────────────────────
+
 print(f"\n{BANNER}")
 print("  ADIM 2 — Ön İşleme")
 print(BANNER)
@@ -142,9 +140,7 @@ if XGB_OK:
 for name in models:
     print(f"  ✔ {name}")
 
-# ─────────────────────────────────────────────
 # 4. YARDIMCI FONKSİYONLAR
-# ─────────────────────────────────────────────
 
 def specificity_score(y_true, y_pred):
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
@@ -171,9 +167,7 @@ def evaluate(name, model, X_data, y_true, cv):
         "_y_pred"    : y_pred,
     }
 
-# ─────────────────────────────────────────────
 # 5. 10-FOLD CV
-# ─────────────────────────────────────────────
 print(f"\n{BANNER}")
 print("  ADIM 4 — 10-Fold Stratified Cross Validation")
 print(BANNER)
@@ -192,9 +186,7 @@ for name, model in models.items():
     results.append(res)
     print(f"  ✔ {name:<18}  Acc={res['Accuracy']:6.2f}%  F1={res['F1-Score']:6.2f}%  MCC={res['MCC']:+.4f}")
 
-# ─────────────────────────────────────────────
 # 6. SONUÇ TABLOSU (terminal)
-# ─────────────────────────────────────────────
 print(f"\n{BANNER}")
 print("  ADIM 5 — Sonuç Tablosu")
 print(BANNER)
@@ -215,9 +207,7 @@ for metric in ["Accuracy", "F1-Score", "MCC"]:
     unit = "%" if metric != "MCC" else ""
     print(f"  🏆 En İyi {metric:<12}: {best:<18} → {val}{unit}")
 
-# ─────────────────────────────────────────────
 # 7. TEST TAHMİNİ + RİSK ETİKETİ
-# ─────────────────────────────────────────────
 print(f"\n{BANNER}")
 print("  ADIM 6 — Test Tahmini & Risk Etiketleme")
 print(BANNER)
@@ -287,9 +277,7 @@ print(f"  Test Risk Dağılımı  :")
 for lbl, cnt in pd.Series(risk_numeric).value_counts().items():
     print(f"    {lbl:<22}: {cnt} kişi")
 
-# ─────────────────────────────────────────────
 # 8. EXCEL RAPORU
-# ─────────────────────────────────────────────
 print(f"\n{BANNER}")
 print("  ADIM 7 — Excel Raporu Oluşturuluyor")
 print(BANNER)
@@ -334,9 +322,7 @@ def data_cell(ws, row, col, value, bg=C_WHITE, bold=False,
         c.number_format = number_format
     return c
 
-# ══════════════════════════════════════════════
 # SAYFA 1 — Model Karşılaştırma Sonuçları
-# ══════════════════════════════════════════════
 ws1 = wb.active
 ws1.title = "Model Sonuçları"
 ws1.sheet_view.showGridLines = False
@@ -505,9 +491,7 @@ data_cell(ws2, tot_row, stat_col,   "TOPLAM",           bg=C_HEADER_LIGHT, bold=
 data_cell(ws2, tot_row, stat_col+1, len(test_preds),     bg=C_HEADER_LIGHT, bold=True)
 data_cell(ws2, tot_row, stat_col+2, 100.0,               bg=C_HEADER_LIGHT, bold=True, number_format="0.0")
 
-# ══════════════════════════════════════════════
 # SAYFA 3 — Train CV Sonuçları + Risk
-# ══════════════════════════════════════════════
 ws3 = wb.create_sheet("Train Tahminleri")
 ws3.sheet_view.showGridLines = False
 
@@ -546,9 +530,7 @@ for ri, (_, row_data) in enumerate(train_result_df.iterrows(), 3):
         data_cell(ws3, ri, ci, val, bg=bg, align=align, number_format=fmt)
     ws3.row_dimensions[ri].height = 16
 
-# ══════════════════════════════════════════════
 # SAYFA 4 — Özet & İstatistikler
-# ══════════════════════════════════════════════
 ws4 = wb.create_sheet("Özet & İstatistikler")
 ws4.sheet_view.showGridLines = False
 ws4.column_dimensions["A"].width = 28
@@ -657,9 +639,7 @@ excel_path = op("ML_Sonuclar_Raporu.xlsx")
 wb.save(excel_path)
 print(f"  ✔ Excel raporu kaydedildi → ML_Sonuclar_Raporu.xlsx")
 
-# ─────────────────────────────────────────────
 # 9. GÖRSELLEŞTİRMELER
-# ─────────────────────────────────────────────
 print(f"\n{BANNER}")
 print("  ADIM 8 — Görseller")
 print(BANNER)
@@ -815,9 +795,7 @@ print("  ✔ 07_risk_distribution.png")
 submission_out = pd.DataFrame({"ID": test_ids, "Mental_Health_Risk": test_preds})
 submission_out.to_csv(op("submission_predictions.csv"), index=False)
 
-# ─────────────────────────────────────────────
 # 10. ÖZET
-# ─────────────────────────────────────────────
 print(f"\n{BANNER}")
 print("  PROJE TAMAMLANDI")
 print(BANNER)

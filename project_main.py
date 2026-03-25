@@ -169,7 +169,7 @@ def evaluate(name, model, X_data, y_true, cv):
 
 # 5. 10-FOLD CV
 print(f"\n{BANNER}")
-print("  ADIM 4 — 10-Fold Stratified Cross Validation")
+print("  10-Fold Stratified Cross Validation")
 print(BANNER)
 
 cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
